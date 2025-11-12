@@ -10,10 +10,8 @@ public class VisitorManager2 : MonoBehaviour
     public Transform doorPoint;
     public GameObject visitorPrefab;
 
-    [Header("Visitors Data")]
-    public VisitorData2[] possibleVisitors;
-
     private GameObject currentVisitor;
+    private VisitorData2 currentVisitorData;
 
     private void Awake()
     {
@@ -30,11 +28,18 @@ public class VisitorManager2 : MonoBehaviour
         if (currentVisitor != null)
             Destroy(currentVisitor);
 
-        VisitorData2 randomData = possibleVisitors[Random.Range(0, possibleVisitors.Length)];
+        // Get a new visitor from the pool
+        VisitorData2 nextVisitor = VisitorPool.Instance.GetNextVisitor();
+        if (nextVisitor == null)
+        {
+            Debug.Log("No more visitors to spawn!");
+            return;
+        }
 
+        currentVisitorData = nextVisitor;
         currentVisitor = Instantiate(visitorPrefab, spawnPoint.position, spawnPoint.rotation);
         VisitorBehavior visitorScript = currentVisitor.GetComponent<VisitorBehavior>();
-        visitorScript.Setup(randomData, doorPoint);
+        visitorScript.Setup(currentVisitorData, doorPoint);
     }
 
     public void RemoveVisitor()
@@ -43,6 +48,15 @@ public class VisitorManager2 : MonoBehaviour
         {
             Destroy(currentVisitor);
             currentVisitor = null;
+        }
+    }
+
+    // Called by DoorDecision2 when player lets them in
+    public void LetVisitorIn()
+    {
+        if (currentVisitorData != null)
+        {
+            VisitorPool.Instance.ActivateBunkerResident(currentVisitorData);
         }
     }
 }

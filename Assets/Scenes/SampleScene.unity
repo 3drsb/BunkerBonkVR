@@ -492,6 +492,37 @@ Transform:
   - {fileID: 1202600576}
   m_Father: {fileID: 609935400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &321689331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 321689332}
+  m_Layer: 0
+  m_Name: BunkerEntryPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &321689332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321689331}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13, y: 1.458, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &373147834
 GameObject:
   m_ObjectHideFlags: 0
@@ -3079,6 +3110,59 @@ Transform:
   - {fileID: 881235774}
   m_Father: {fileID: 256839421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1227512911
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1227512912}
+  - component: {fileID: 1227512913}
+  m_Layer: 0
+  m_Name: AaronBunkerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1227512912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227512911}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3, y: 1.458, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1227512913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227512911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21180ccef6c6a9749ba7e994fd66ef90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  residentName: Aaron
+  idleDialogue:
+  - You are stupid bro.
+  repeatDialogue:
+  - Stop talking to me, but thanks anyways.
+  specialDialogue:
+  - This is a special Dialogue between me and you, keep it Secret.
+  interactionDistance: 2
+  playerCamera: {fileID: 1406119823}
 --- !u!1 &1307761180
 GameObject:
   m_ObjectHideFlags: 0
@@ -3269,6 +3353,11 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!4 &1406119823 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1767192434, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 1329855567}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1437380877
 GameObject:
   m_ObjectHideFlags: 0
@@ -3681,6 +3770,169 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1568253563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1568253565}
+  - component: {fileID: 1568253564}
+  m_Layer: 0
+  m_Name: VisitorPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1568253564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568253563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c488a6c803fc8648b2a03259a891f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allVisitors:
+  - visitorName: Aaron
+    isMonster: 0
+    introHumanComments:
+    - I've got a bone to pick with you Little Human!!
+    - Come on!! Are we not friends?? Let me in!!
+    introMonsterComments: []
+    letInHumanComments:
+    - I knew that joke would prove my Humanity, lol
+    - I guess you haven't changed after getting that job
+    letInMonsterComments: []
+    denyHumanComments:
+    - You still a massive jerk.
+    - Monkey!!! HOW DARE YOU!!!
+    denyMonsterComments: []
+    canReturn: 1
+    isSpecial: 1
+  - visitorName: Joseph
+    isMonster: 1
+    introHumanComments:
+    - I've got a bone to pick with you Emmanuel!!
+    - Come on Emmanuel!! Are we not friends?? Let me in!!
+    introMonsterComments:
+    - I love eating Tacos, take one Emmanuel *smile*
+    letInHumanComments:
+    - Joseph knew that joke would prove his Humanity, L to the L
+    - Joseph guessed correctly *Laugh*
+    letInMonsterComments:
+    - I don't want to seem weird, am I weird?
+    denyHumanComments:
+    - Joseph doesn't like you very much
+    - Joseph wants to call you a filthy MONKEY, heheheeeeee
+    denyMonsterComments:
+    - You won't survive for long
+    canReturn: 1
+    isSpecial: 1
+  - visitorName: Random 1
+    isMonster: 1
+    introHumanComments:
+    - Super Random 1
+    - Shush 1
+    introMonsterComments:
+    - Monster 1
+    letInHumanComments:
+    - Monster 1 In shush
+    - Bla bla 1
+    letInMonsterComments:
+    - Wierdo 1
+    denyHumanComments:
+    - you will die shush 1
+    - Let me live you say? 1
+    denyMonsterComments:
+    - gagagogo 1
+    canReturn: 0
+    isSpecial: 0
+  - visitorName: Random 2
+    isMonster: 0
+    introHumanComments:
+    - Super Random 2
+    - Shush 2
+    introMonsterComments:
+    - Human 2
+    letInHumanComments:
+    - Human 2 In shush
+    - gla gla 2
+    letInMonsterComments:
+    - Wierdo 2
+    denyHumanComments:
+    - you will die shush 2
+    - Let me live you say? 2
+    denyMonsterComments:
+    - gagagogo 2
+    canReturn: 0
+    isSpecial: 0
+  visitedVisitors: []
+  bunkerResidents:
+  - visitorName: Aaron
+    residentObject: {fileID: 1227512911}
+    residentBehavior: {fileID: 0}
+  - visitorName: Joseph
+    residentObject: {fileID: 1645928972}
+    residentBehavior: {fileID: 0}
+  - visitorName: Random 1
+    residentObject: {fileID: 1785207270}
+    residentBehavior: {fileID: 0}
+  - visitorName: Random 2
+    residentObject: {fileID: 2133110534}
+    residentBehavior: {fileID: 0}
+--- !u!4 &1568253565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568253563}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.139666, y: 1.4651738, z: 5.429047}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1645928972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1645928973}
+  m_Layer: 0
+  m_Name: JosephBunkerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1645928973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645928972}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 15, y: 1.458, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1657574101
 GameObject:
   m_ObjectHideFlags: 0
@@ -3713,21 +3965,6 @@ MonoBehaviour:
   spawnPoint: {fileID: 1932938034}
   doorPoint: {fileID: 1185878194}
   visitorPrefab: {fileID: 480373404237574982, guid: 05875100a6264a84a8eb3b44cf17cd32, type: 3}
-  possibleVisitors:
-  - visitorName: Aaron
-    humanComments:
-    - I've got a Bone to pick with you!!!
-    - Don't be silly and let me in.
-    - I'm a really short guy, I can't survive alone out here
-    monsterComments: []
-    isMonster: 0
-  - visitorName: Joseph
-    humanComments: []
-    monsterComments:
-    - I'm from Mexico and I love tacos.
-    - I promise that I am not a Monster, I am a Human.
-    - Soooo..... Are you alone?
-    isMonster: 1
 --- !u!4 &1657574103
 Transform:
   m_ObjectHideFlags: 0
@@ -3966,6 +4203,37 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.675, y: 1.5, z: 14.969}
   m_LocalScale: {x: 6, y: 3, z: 0.12000003}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1785207270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1785207271}
+  m_Layer: 0
+  m_Name: Random1BunkerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1785207271
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785207270}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6, y: 1.458, z: -8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4612,6 +4880,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008074263}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2133110534
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2133110535}
+  m_Layer: 0
+  m_Name: Random2BunkerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2133110535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133110534}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18, y: 1.458, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4621,6 +4920,7 @@ SceneRoots:
   - {fileID: 1329855567}
   - {fileID: 1307761183}
   - {fileID: 1657574103}
+  - {fileID: 1568253565}
   - {fileID: 887970896}
   - {fileID: 1878188680}
   - {fileID: 562712968}
@@ -4633,7 +4933,12 @@ SceneRoots:
   - {fileID: 1030961767}
   - {fileID: 703607495}
   - {fileID: 1185878194}
+  - {fileID: 321689332}
   - {fileID: 1932938034}
+  - {fileID: 1227512912}
+  - {fileID: 1785207271}
+  - {fileID: 1645928973}
+  - {fileID: 2133110535}
   - {fileID: 64579300}
   - {fileID: 780231123}
   - {fileID: 1466947914}

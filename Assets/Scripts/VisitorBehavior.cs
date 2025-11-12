@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class VisitorBehavior : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class VisitorBehavior : MonoBehaviour
     private Transform doorPoint;
     private bool hasTriggered = false;
 
-    public void Setup(VisitorData2 visitorData2, Transform targetPoint)
+    public void Setup(VisitorData2 visitorData, Transform targetPoint)
     {
-        data = visitorData2;
+        data = visitorData;
         doorPoint = targetPoint;
     }
 
@@ -19,48 +20,92 @@ public class VisitorBehavior : MonoBehaviour
     {
         if (doorPoint == null) return;
 
-        // Move toward door until close enough
+        // Move toward the door until close enough
         if (!hasTriggered)
         {
             transform.position = Vector3.MoveTowards(transform.position, doorPoint.position, moveSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, doorPoint.position) < triggerDistance)
             {
                 hasTriggered = true;
-                DialogueManager2.Instance.ShowDialogue($"{data.visitorName}: \"{GetRandomIntro()}\"");
+                DialogueManager2.Instance.ShowDialogue($"{data.visitorName}: \"{GetIntroLine()}\"");
             }
         }
     }
 
-    string GetRandomIntro()
+    string GetIntroLine()
     {
+        string[] pool;
+
         if (data.isMonster)
         {
-            string[] lines = { "Please... it’s cold out here...", "I’m just... so hungry...", "Let me in... I won’t hurt you..." };
-            return lines[Random.Range(0, lines.Length)];
+            // 70% chance to act human
+            bool actHuman = Random.value < 0.7f && data.introHumanComments.Length > 0;
+            pool = actHuman ? data.introHumanComments : data.introMonsterComments;
         }
         else
         {
-            string[] lines = { "Please, let me in!", "I’m just looking for shelter!", "There’s something out there!" };
-            return lines[Random.Range(0, lines.Length)];
+            pool = data.introHumanComments;
         }
+
+        return pool.Length > 0 ? pool[Random.Range(0, pool.Length)] : "...";
     }
 
     public void ReactToDecision(bool letIn)
     {
-        string[] lines;
+        string[] pool;
+
         if (data.isMonster)
         {
-            lines = letIn
-                ? new[] { "Heh... big mistake.", "Finally... dinner.", "You shouldn’t have done that." }
-                : new[] { "You can’t keep me out forever...", "We’ll meet again...", "Fine... but I’ll remember this." };
+            if (letIn)
+            {
+                pool = data.letInMonsterComments.Length > 0
+                    ? data.letInMonsterComments
+                    : data.introMonsterComments;
+
+                StartCoroutine(EnterBunker());
+            }
+            else
+            {
+                bool actHuman = Random.value < 0.7f && data.denyHumanComments.Length > 0;
+                pool = actHuman ? data.denyHumanComments : data.denyMonsterComments;
+                StartCoroutine(LeaveDoor());
+            }
         }
         else
         {
-            lines = letIn
-                ? new[] { "Thank you! I owe you my life.", "Bless you, kind soul.", "You’re saving lives in there." }
-                : new[] { "Please... no!", "Why would you do this?!", "I thought you were human..." };
+            pool = letIn ? data.letInHumanComments : data.denyHumanComments;
+            StartCoroutine(letIn ? EnterBunker() : LeaveDoor());
         }
 
-        DialogueManager2.Instance.ShowDialogue($"{data.visitorName}: \"{lines[Random.Range(0, lines.Length)]}\"");
+        if (pool == null || pool.Length == 0)
+            pool = new[] { "..." };
+
+        string chosen = pool[Random.Range(0, pool.Length)];
+        DialogueManager2.Instance.ShowDialogue($"{data.visitorName}: \"{chosen}\"");
+    }
+
+    private IEnumerator EnterBunker()
+    {
+        // optional small delay before removal
+        yield return new WaitForSeconds(1f);
+
+        DialogueManager2.Instance.HideDialogue();
+        VisitorPool.Instance.ActivateBunkerResident(data);
+        VisitorManager2.Instance.RemoveVisitor();
+    }
+
+
+    private IEnumerator LeaveDoor()
+    {
+        Vector3 away = transform.position + transform.forward * -5f;
+
+        while (Vector3.Distance(transform.position, away) > 0.1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, away, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        DialogueManager2.Instance.HideDialogue();
+        VisitorManager2.Instance.RemoveVisitor();
     }
 }
