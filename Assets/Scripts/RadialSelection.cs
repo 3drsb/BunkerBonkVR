@@ -6,20 +6,17 @@ using UnityEngine.XR;
 
 public class RadialSelection : MonoBehaviour
 {
-    // ----------------------
-    //  Custom Button Enum
-    // ----------------------
     public enum XRButton
     {
-        PrimaryButton,        // A or X
-        SecondaryButton,      // B or Y
-        TriggerButton,        // trigger
-        GripButton,           // grip
-        StickClick            // thumbstick click
+        PrimaryButton,
+        SecondaryButton,
+        TriggerButton,
+        GripButton,
+        StickClick
     }
 
     [Header("Button To Open Radial Menu")]
-    public XRButton spawnButton; // <-- NOW CHOOSE IN INSPECTOR!
+    public XRButton spawnButton;
 
     [Header("Radial Settings")]
     [Range(2, 10)]
@@ -41,6 +38,18 @@ public class RadialSelection : MonoBehaviour
     // Button tracking
     private bool wasPressedLastFrame = false;
 
+    // ---- New: singleton instance ----
+    public static RadialSelection Instance { get; private set; }
+
+    // ---- New: current resident target set by ResidentInteraction ----
+    [HideInInspector] public ResidentInteraction currentTarget;
+
+    void Awake()
+    {
+        // singleton (safe: only sets first instance)
+        if (Instance == null) Instance = this;
+        else if (Instance != this) Debug.LogWarning("Multiple RadialSelection instances found!");
+    }
 
     void Start()
     {
@@ -60,7 +69,6 @@ public class RadialSelection : MonoBehaviour
             Debug.Log("Right controller found!");
         }
     }
-
 
     void Update()
     {
@@ -91,10 +99,6 @@ public class RadialSelection : MonoBehaviour
         wasPressedLastFrame = isPressed;
     }
 
-
-    // ------------------------------------------
-    //  Maps our enum to Unity XR button states
-    // ------------------------------------------
     bool GetButtonState(XRButton button)
     {
         bool value = false;
@@ -125,13 +129,22 @@ public class RadialSelection : MonoBehaviour
         return value;
     }
 
-
+    // Called when radial selection is released
     public void HideAndTriggerSelected()
     {
-        OnPartSelected.Invoke(currentSelectedRadialPart);
+        // keep existing UnityEvent for other systems
+        OnPartSelected?.Invoke(currentSelectedRadialPart);
+
+        // If a resident target is set, notify it (0..N-1)
+        if (currentTarget != null)
+        {
+            currentTarget.OnRadialOptionSelected(currentSelectedRadialPart);
+            // clear the target after use
+            currentTarget = null;
+        }
+
         radialPartCanvas.gameObject.SetActive(false);
     }
-
 
     public void GetSelectedRadialPart()
     {
@@ -160,13 +173,11 @@ public class RadialSelection : MonoBehaviour
         }
     }
 
-
     public void SpawnRadialPart()
     {
         // Position the radial menu at your hand
         radialPartCanvas.position = handTransform.position;
         radialPartCanvas.rotation = handTransform.rotation;
-
 
         foreach (var obj in spawnedParts)
             Destroy(obj);
@@ -182,8 +193,9 @@ public class RadialSelection : MonoBehaviour
             part.transform.position = radialPartCanvas.position;
             part.transform.localEulerAngles = rotation;
 
-            part.GetComponent<Image>().fillAmount =
-                (1f / numberOfRadialPart) - (angleBetweenPart / 360f);
+            var img = part.GetComponent<Image>();
+            if (img != null)
+                img.fillAmount = (1f / numberOfRadialPart) - (angleBetweenPart / 360f);
 
             spawnedParts.Add(part);
         }

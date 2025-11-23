@@ -4,78 +4,22 @@ public class ResidentBehavior : MonoBehaviour
 {
     [Header("Resident Info")]
     public string residentName;
-    [TextArea] public string[] idleDialogue;
-    [TextArea] public string[] repeatDialogue;
 
-    [Header("Interaction Settings")]
-    public float interactionDistance = 2.5f;
-    public Transform playerCamera;
+    [Header("Responses (custom per resident)")]
+    [TextArea] public string talkResponse = "Hello.";
+    [TextArea] public string testResponse = "I pass the test.";
+    [TextArea] public string giveResponse = "Thank you.";
+    [TextArea] public string leaveResponse = "Goodbye.";
 
-    private bool menuOpen = false;
-    private GameObject activeMenu;
-
-    private void Start()
+    public string GetResponseForOption(int optionIndex)
     {
-        if (playerCamera == null && Camera.main != null)
-            playerCamera = Camera.main.transform;
-    }
-
-    private void Update()
-    {
-        if (playerCamera == null) return;
-
-        float distance = Vector3.Distance(playerCamera.position, transform.position);
-
-        if (distance < interactionDistance && !menuOpen)
+        switch (optionIndex)
         {
-            ShowRadialMenu();
-            Debug.Log($"{residentName}: Player entered interaction range!");
+            case 0: return talkResponse;   // Talk
+            case 1: return testResponse;   // Test
+            case 2: return giveResponse;   // Give
+            case 3: return leaveResponse;  // Leave
+            default: return "...";
         }
-        else if (distance > interactionDistance && menuOpen)
-        {
-            CloseRadialMenu();
-        }
-    }
-
-    private void ShowRadialMenu()
-    {
-        GameObject menuPrefab = Resources.Load<GameObject>("UI/RadialMenu");
-        if (menuPrefab == null)
-        {
-            Debug.LogWarning("RadialMenu prefab not found in Resources/UI");
-            return;
-        }
-
-        Debug.Log("Attempting to load and show RadialMenu prefab...");
-
-        activeMenu = Instantiate(menuPrefab, transform.position + Vector3.up * 1.5f, Quaternion.identity);
-        RadialMenuManager menu = activeMenu.GetComponent<RadialMenuManager>();
-        menu.Initialize(this);
-        menuOpen = true;
-    }
-
-    private void CloseRadialMenu()
-    {
-        if (activeMenu != null)
-            Destroy(activeMenu);
-
-        menuOpen = false;
-    }
-
-    // --- Called by RadialMenuManager ---
-    public void TriggerDialogue()
-    {
-        string line = idleDialogue.Length > 0 ? idleDialogue[Random.Range(0, idleDialogue.Length)] : "They remain silent.";
-        DialogueManager2.Instance.ShowDialogue($"{residentName}: \"{line}\"");
-    }
-
-    public void TriggerTest()
-    {
-        DialogueManager2.Instance.ShowDialogue($"{residentName}: \"I don't know much about that...\"");
-    }
-
-    public void TriggerGive()
-    {
-        DialogueManager2.Instance.ShowDialogue($"{residentName}: \"Thanks... I guess.\"");
     }
 }
