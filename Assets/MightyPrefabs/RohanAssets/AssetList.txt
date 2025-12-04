@@ -1,0 +1,18 @@
+ROHAN'S 3D ASSETS - BUNKER BONK VR
+===================================
+
+MODULAR WALL SYSTEM:
+- WallMapDesignV1.fbx - Main modular wall pieces for bunker construction
+- WallTrimKitV1.fbx - Decorative trim kit for walls
+
+SOFTWARE USED:
+- Autodesk Maya (modeling and UV unwrapping)
+- Substance Painter (texturing - in progress)
+
+TECHNICAL SPECS:
+- VR-optimized polygon count
+- 1:1 real-world scale for Meta Quest
+- Modular design for flexible level construction
+- Complete UV unwrapping for PBR texturing
+
+STATUS: Prototype phase complete, ready for texturing
