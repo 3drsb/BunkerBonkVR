@@ -1,0 +1,20 @@
+HOW TO USE ROHAN'S MODULAR WALL ASSETS
+
+FOR LEVEL DESIGNERS:
+
+1. Import the .fbx files from RohanAssets folder
+2. Drag wall pieces into your scene
+3. Snap pieces together using Unity's vertex snapping (hold V key)
+4. Add trim pieces for visual detail
+5. Scale is set to real-world - no adjustments needed
+
+ASSET LIST:
+- Assets Kit: Only main asssets
+- Wall Kit: Main wall sections & Decorative trim elements
+- Elevator Kit: Modular Elevator Pieces specifically for Elevator usage
+
+TIPS:
+- Pieces are designed to connect seamlessly
+- Use trim kit to break up visual repetition
+- All assets are VR-optimized for performance
+- Currently untextured (prototype phase)
