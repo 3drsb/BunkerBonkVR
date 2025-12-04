@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Antlr3.Runtime.Tree.TreeWizard;
 
 public class VisitorPool : MonoBehaviour
 {
@@ -33,26 +34,46 @@ public class VisitorPool : MonoBehaviour
     }
 
     // Called when the player lets someone in
+    // Called when the player lets someone in
     public void ActivateBunkerResident(VisitorData2 data)
     {
         foreach (var res in bunkerResidents)
         {
             if (res.visitorName == data.visitorName)
             {
+                // Activate the resident gameobject and cache components
                 res.residentObject.SetActive(true);
                 res.residentBehavior = res.residentObject.GetComponent<ResidentBehavior>();
-                Debug.Log($"{data.visitorName} is now inside the bunker.");
+
+                // Try to get ResidentStatus on the resident object and set identity
+                res.residentStatus = res.residentObject.GetComponent<ResidentStatus>();
+                if (res.residentStatus != null)
+                {
+                    res.residentStatus.isMonster = data.isMonster;
+                }
+                else
+                {
+                    Debug.LogWarning($"ResidentStatus missing on resident object for {data.visitorName}. Add ResidentStatus component to the prefab.");
+                }
+
+                Debug.Log($"{data.visitorName} is now inside the bunker. isMonster={data.isMonster}");
+                GameManager.Instance.OnResidentAccepted(data.isMonster);
+                // After setting residentStatus.isMonster
+                ResidentManager.Instance.RegisterResident(res.residentStatus);
                 return;
             }
         }
         Debug.LogWarning($"No bunker resident found for {data.visitorName}");
     }
-}
 
-[System.Serializable]
-public class BunkerResident
-{
-    public string visitorName;
-    public GameObject residentObject;
-    [HideInInspector] public ResidentBehavior residentBehavior;
+
+
+    [System.Serializable]
+    public class BunkerResident
+    {
+        public string visitorName;
+        public GameObject residentObject;
+        [HideInInspector] public ResidentBehavior residentBehavior;
+        [HideInInspector] public ResidentStatus residentStatus; // cached for quick access
+    }
 }

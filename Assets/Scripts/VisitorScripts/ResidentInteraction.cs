@@ -19,6 +19,13 @@ public class ResidentInteraction : MonoBehaviour
     private GameObject activeUI;
     private TextMeshProUGUI uiText;
 
+    private ResidentStatus residentStatus;
+    [HideInInspector] public int currentPrimaryIndexForSubmenu = -1;
+    [HideInInspector] public bool interactionLocked = false; // true after confirmed
+
+
+
+
     private bool playerInRange = false;
     private bool uiShowing = false;
 
@@ -28,6 +35,12 @@ public class ResidentInteraction : MonoBehaviour
     void Start()
     {
         residentBehavior = GetComponent<ResidentBehavior>();
+        if (residentBehavior == null)
+            Debug.LogError($"{name}: ResidentBehavior missing!");
+
+        residentStatus = GetComponent<ResidentStatus>();
+        if (residentStatus == null)
+            Debug.LogWarning($"{name}: ResidentStatus missing.");
 
         if (playerCamera == null && Camera.main != null)
             playerCamera = Camera.main.transform;
@@ -36,8 +49,11 @@ public class ResidentInteraction : MonoBehaviour
             Debug.LogError($"{name}: interactUIPrefab not assigned!");
     }
 
+
     void Update()
     {
+        if (interactionLocked) return; // cannot interact anymore
+
         if (playerCamera == null) return;
 
         float dist = Vector3.Distance(playerCamera.position, transform.position);
@@ -91,6 +107,11 @@ public class ResidentInteraction : MonoBehaviour
 
     private void ShowInteractUI(string text)
     {
+        if (interactionLocked)
+        {
+            text = "Already confirmed";
+        }
+
         if (interactUIPrefab == null) return;
 
         if (activeUI == null)
@@ -124,56 +145,101 @@ public class ResidentInteraction : MonoBehaviour
     // PRIMARY: Talk / Test / Give / Leave
     public void OnPrimaryOptionSelected(int optionIndex)
     {
-        if (!playerInRange) return;
-
-        currentPrimaryIndex = optionIndex;
+        if (residentBehavior == null)
+        {
+            Debug.LogError($"{name}: ResidentBehavior is missing!");
+            return;
+        }
 
         switch (optionIndex)
         {
             case 0: // TALK
                 ShowSubmenu("Talk", residentBehavior.GetTalkOptions());
+                currentPrimaryIndex = 0;
                 break;
 
             case 1: // TEST
                 ShowSubmenu("Test", residentBehavior.GetTestOptions());
+                currentPrimaryIndex = 1;
                 break;
 
-            case 2: // GIVE
-                ShowSubmenu("Give", residentBehavior.GetGiveOptions());
+            case 2: // CONFIRM
+                if (residentStatus != null)
+                {
+                    string resp = residentStatus.ConfirmHuman();
+                    ShowResponse(resp);
+
+                    // Lock future interactions
+                    interactionLocked = true;
+                    HideInteractUI();
+
+                    GameManager.Instance.OnConfirmHuman(); // update progress
+                }
+                else
+                {
+                    ShowResponse("Cannot confirm: ResidentStatus missing!");
+                }
+                currentPrimaryIndex = -1;
                 break;
 
-            case 3: // LEAVE
-                showingSubmenu = false;
-                ShowResponse(residentBehavior.GetLeaveResponse());
+
+            case 3: // KILL
+                if (residentStatus != null)
+                {
+                    residentStatus.KillResident();
+                }
+                else
+                {
+                    ShowResponse("Cannot kill: ResidentStatus missing!");
+                }
+                currentPrimaryIndex = -1;
+                HideInteractUI();
+                if (RadialSelection.Instance != null && RadialSelection.Instance.currentTarget == this)
+                    RadialSelection.Instance.currentTarget = null;
                 break;
         }
     }
+
+
 
     // SUBMENU OPTION SELECTED
     public void OnSubmenuOptionSelected(int optionIndex)
     {
         if (!showingSubmenu) return;
 
-        string response = "…";
-
-        switch (currentPrimaryIndex)
+        if (residentBehavior == null)
         {
-            case 0:
+            Debug.LogError($"{name}: residentBehavior is null!");
+            return;
+        }
+
+        string response = "...";
+
+        switch (currentPrimaryIndexForSubmenu)
+        {
+            case 0: // TALK
                 response = residentBehavior.GetTalkResponse(optionIndex);
                 break;
-            case 1:
-                response = residentBehavior.GetTestResponse(optionIndex);
+
+            case 1: // TEST
+                if (residentStatus != null)
+                    response = residentStatus.HandleTest(optionIndex);
+                else
+                    response = residentBehavior.GetTestResponse(optionIndex);
                 break;
-            case 2:
-                response = residentBehavior.GetGiveResponse(optionIndex);
+
+            default:
+                response = "...";
                 break;
         }
 
         showingSubmenu = false;
-        currentPrimaryIndex = -1;
+        currentPrimaryIndexForSubmenu = -1;
 
         ShowResponse(response);
     }
+
+
 
     // -------------------------------------------------------------------
     // SUBMENU HANDLING

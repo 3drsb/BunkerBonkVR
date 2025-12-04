@@ -127,18 +127,19 @@ public class RadialSelection : MonoBehaviour
         submenuMode = false;
 
         currentLabels = new List<string>()
-        {
-            "Talk",
-            "Test",
-            "Give",
-            "Leave"
-        };
+    {
+        "Talk",
+        "Test",
+        "Confirm", // was Give
+        "Kill"     // was Leave
+    };
 
         SpawnRadialMenu(currentLabels);
 
         radialPartCanvas.gameObject.SetActive(true);
         menuOpen = true;
     }
+
 
     // -------------------------------------------------------
     // OPEN SUBMENU
@@ -243,11 +244,11 @@ public class RadialSelection : MonoBehaviour
             return;
 
         // call into the target first - the target may open a submenu synchronously
-        if (submenuMode)
+        if (submenuMode && currentTarget != null)
         {
-            // if we're already in submenu mode, this is a submenu confirmation
+            // Confirm submenu selection
             currentTarget.OnSubmenuOptionSelected(currentSelectedRadialPart);
-            CloseMenu();
+            CloseMenu(); // Close menu after submenu selection
             return;
         }
         else
