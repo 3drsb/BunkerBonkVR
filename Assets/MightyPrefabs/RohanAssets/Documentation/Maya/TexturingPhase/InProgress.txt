@@ -1,0 +1,12 @@
+TEXTURING PHASE - IN PROGRESS
+
+Current Status: Assets are UV unwrapped and ready for texturing
+
+Planned Workflow:
+- Software: Substance Painter
+- Materials: PBR workflow (Albedo, Normal, Metallic, Roughness)
+- Theme: Weathered bunker aesthetic with rust, grime, and wear
+- Timeline: Scheduled for post-prototype phase
+
+Note: Game is currently in prototype phase focusing on mechanics and gameplay.
+Visual polish including texturing is planned for next development iteration.
